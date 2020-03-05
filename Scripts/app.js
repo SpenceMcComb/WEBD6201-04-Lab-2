@@ -1,5 +1,19 @@
+/**
+ * Name: Spence McComb
+ * Student ID: 100426427
+ * Date Completed: 2020/03/05
+ */
+
 class Contact
 {
+    /**
+     * Creates an instance of Contact.
+     * @param {string} [contactName=""]
+     * @param {string} [emailAddress=""]
+     * @param {string} [contactNumber=""]
+     * @param {string} [contactMessage=""]
+     * @memberof Contact
+     */
     constructor(contactName = "", emailAddress = "", contactNumber = "", contactMessage = "")
     {
         this.contactName = contactName;
@@ -11,6 +25,12 @@ class Contact
 
 class Login
 {
+    /**
+     * Creates an instance of Login.
+     * @param {string} [loginName=""]
+     * @param {string} [loginPassword=""]
+     * @memberof Login
+     */
     constructor(loginName = "", loginPassword = "")
     {
         this.loginName = loginName;
@@ -20,6 +40,14 @@ class Login
 
 class User
 {
+    /**
+     * Creates an instance of User.
+     * @param {string} [firstName=""]
+     * @param {string} [lastName=""]
+     * @param {string} [emailAddress=""]
+     * @param {string} [password=""]
+     * @memberof User
+     */
     constructor(firstName = "", lastName = "", emailAddress = "", password = "")
     {
         this.firstName = firstName;
@@ -28,7 +56,6 @@ class User
         this.password = password;
     }
 }
-
 
 "use strict";
 //IIFE - Immediately Invoked Function Expression
@@ -256,6 +283,9 @@ let app;
         document.title = "WEBD6201 - Projects";
     }
 
+    /**
+     * Function that displays the login page and contains the appropriate validation
+     */
     function DisplayLoginContent()
     {
         // Change the title to an appropriate one
@@ -291,6 +321,9 @@ let app;
 
     }
 
+    /**
+     * Function that displays the register page and contains the appropriate validation
+     */
     function DisplayRegisterContent()
     {
         document.title = "WEBD6201 - Register";
@@ -376,7 +409,7 @@ let app;
             }
         });
 
-        // Data validation when password loses focus
+        // Data validation when confirmPassword loses focus
         $("#confirmPassword").blur(function(){
             if ($("#confirmPassword").val().length < MINIMUM_PASSWORD_LENGTH)
             {
@@ -399,13 +432,14 @@ let app;
                 errorMessageDiv.hide();
             }
         });
-    
         
+
         $("#registerForm").submit((e)=>
         {  
             e.preventDefault();
             e.stopPropagation();
 
+            // Validation to ensure information has been entered in each textbox before submission
             if ($("#FirstName").val() != "" && $("#lastName").val() != "" && $("#emailAddress").val() != "" && $("#password").val() != "")
             {
                 // Gather the data from the form
