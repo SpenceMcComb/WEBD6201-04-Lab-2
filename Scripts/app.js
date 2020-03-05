@@ -18,6 +18,17 @@ class Login
     }
 }
 
+class Register
+{
+    constructor(firstName = "", lastName = "", emailAddress = "", password = "")
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.password = password;
+    }
+}
+
 
 "use strict";
 //IIFE - Immediately Invoked Function Expression
@@ -247,31 +258,35 @@ let app;
 
     function DisplayLoginContent()
     {
+        // Change the title to an appropriate one
         document.title = "WEBD6201 - Login";
 
+        // On form submission
         $("#loginForm").submit((e)=>
         {  
+            // Gives us more control over what the button does
             e.preventDefault();
             e.stopPropagation();
 
+            // Gather the login name and password from the form
             let loginName = $("#contactName").val()
-            let loginPassword = $("#emailAddress").val();
+            let loginPassword = $("#password").val();
 
-            let theUser = new Login(loginName, loginPassword);
-            
-            let appendedText = '<li id="navbarUser" class="navbar-text">' + theUser.loginName + '</a></li>';
-            $("#login").after(appendedText);
-           
-            
+            // Ensure data has been entered before moving on
+            if (loginName != "" && loginPassword != "")
+            {
+                // Create a new Login
+                let theUser = new Login(loginName, loginPassword);
+                
+                // Generate the text that will be appended
+                let addedText = '<li id="navbarUser" class="navbar-text">&nbsp;' + theUser.loginName + '&nbsp;</a></li>';
+                $("#login").after(addedText);
 
-            $("#loginForm")[0].reset();
-            $("#login").hide();
-            $("#logout").show();
-
-
-
-            
-
+                // Resets the form
+                $("#loginForm")[0].reset();
+                $("#login").hide();
+                $("#logout").show();
+            }    
         });
 
     }
@@ -279,6 +294,33 @@ let app;
     function DisplayRegisterContent()
     {
         document.title = "WEBD6201 - Register";
+
+        // Create and insert the new, hidden div
+        let errorMessage = "<div id=errorMessageDiv></div>";
+        $("#confirmPassword").parent().after(errorMessage);
+        let errorMessageDiv = $("#errorMessageDiv");
+        errorMessageDiv.hide();
+        
+        $("#registerForm").submit((e)=>
+        {  
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Gather the data from the form
+            let firstName = $("#FirstName").val();
+            let lastName = $("#lastName").val();
+            let emailAddress = $("#emailAddress").val();
+
+            // Ensure a password has been entered and the confirm password matches
+            if ($("#password").val() == $("#confirmPassword").val() && $("#password").val() != "")
+            {
+                // Gather the password and create a new Register
+                let password = $("#password").val();
+                let theUser = new Register(firstName, lastName, emailAddress, password);
+            }
+
+            $("#registerForm")[0].reset();
+        });
     }
 
     /**
