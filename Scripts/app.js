@@ -18,7 +18,7 @@ class Login
     }
 }
 
-class Register
+class User
 {
     constructor(firstName = "", lastName = "", emailAddress = "", password = "")
     {
@@ -295,31 +295,137 @@ let app;
     {
         document.title = "WEBD6201 - Register";
 
+        // Declare the constants for this page
+        let MINIMUM_NAME_LENGTH = 2;
+        let MINIMUM_EMAIL_LENGTH = 8;
+        let MINIMUM_PASSWORD_LENGTH = 6;
+
         // Create and insert the new, hidden div
-        let errorMessage = "<div id=errorMessageDiv></div>";
-        $("#confirmPassword").parent().after(errorMessage);
+        let insertErrorMessageDiv = "<div id=errorMessageDiv></div>";
+        $("#confirmPassword").parent().after(insertErrorMessageDiv);
         let errorMessageDiv = $("#errorMessageDiv");
+        errorMessageDiv.html('<div class="col-md-12"><p class="hint-text" id="ErrorMessage"></p></div>');
+        let errorMessage = $("#ErrorMessage");
         errorMessageDiv.hide();
+
+        // Data validation when first name loses focus
+        $("#FirstName").blur(function(){
+            if ($("#FirstName").val().length < MINIMUM_NAME_LENGTH)
+            {
+                // Select the element again
+                errorMessageDiv.show();
+                errorMessage.text('First name too short. Please ensure it is at least ' + MINIMUM_NAME_LENGTH + ' characters long.');
+                $("#FirstName").focus();
+            }
+            else 
+            {
+                // Clear and hide the error message
+                errorMessage.text("");
+                errorMessageDiv.hide();
+            }
+        });
+
+        // Data validation when last name loses focus
+        $("#lastName").blur(function(){
+            if ($("#lastName").val().length < MINIMUM_NAME_LENGTH)
+            {
+                // Select the element again
+                errorMessageDiv.show();
+                errorMessage.text('Last name too short. Please ensure it is at least ' + MINIMUM_NAME_LENGTH + ' characters long.');
+                $("#lastName").focus();
+            }
+            else 
+            {
+                // Clear and hide the error message
+                errorMessage.text("");
+                errorMessageDiv.hide();
+            }
+        });
+
+        // Data validation when email address loses focus
+        $("#emailAddress").blur(function(){
+            if ($("#emailAddress").val().length < MINIMUM_NAME_LENGTH || !$("#emailAddress").val().includes("@"))
+            {
+                // Select the element again
+                errorMessageDiv.show();
+                errorMessage.text('Email address must be at least ' + MINIMUM_EMAIL_LENGTH + ' characters long and contain the following: @.');
+                $("#emailAddress").focus();
+            }
+            else 
+            {
+                // Clear and hide the error message
+                errorMessage.text("");
+                errorMessageDiv.hide();
+            }
+        });
+
+        // Data validation when password loses focus
+        $("#password").blur(function(){
+            if ($("#password").val().length < MINIMUM_PASSWORD_LENGTH)
+            {
+                // Select the element again
+                errorMessageDiv.show();
+                errorMessage.text('Password must be at least ' + MINIMUM_PASSWORD_LENGTH + ' characters long.');
+                $("#password").focus();
+            }
+            else 
+            {
+                // Clear and hide the error message
+                errorMessage.text("");
+                errorMessageDiv.hide();
+            }
+        });
+
+        // Data validation when password loses focus
+        $("#confirmPassword").blur(function(){
+            if ($("#confirmPassword").val().length < MINIMUM_PASSWORD_LENGTH)
+            {
+                // Select the element again
+                errorMessageDiv.show();
+                errorMessage.text('Password must be at least ' + MINIMUM_PASSWORD_LENGTH + ' characters long.');
+                $("#confirmPassword").focus();
+            }
+            else if ($("#confirmPassword").val() != $("#password").val())
+            {
+                // Select the first password element
+                errorMessageDiv.show();
+                errorMessage.text('The entered passwords do not match.');
+                $("#password").select();
+            }
+            else 
+            {
+                // Clear and hide the error message
+                errorMessage.text("");
+                errorMessageDiv.hide();
+            }
+        });
+    
         
         $("#registerForm").submit((e)=>
         {  
             e.preventDefault();
             e.stopPropagation();
 
-            // Gather the data from the form
-            let firstName = $("#FirstName").val();
-            let lastName = $("#lastName").val();
-            let emailAddress = $("#emailAddress").val();
-
-            // Ensure a password has been entered and the confirm password matches
-            if ($("#password").val() == $("#confirmPassword").val() && $("#password").val() != "")
+            if ($("#FirstName").val() != "" && $("#lastName").val() != "" && $("#emailAddress").val() != "" && $("#password").val() != "")
             {
-                // Gather the password and create a new Register
+                // Gather the data from the form
+                let firstName = $("#FirstName").val();
+                let lastName = $("#lastName").val();
+                let emailAddress = $("#emailAddress").val();
                 let password = $("#password").val();
-                let theUser = new Register(firstName, lastName, emailAddress, password);
-            }
 
-            $("#registerForm")[0].reset();
+                // Create a new User and display it in the console
+                let theUser = new User(firstName, lastName, emailAddress, password);
+                console.log(theUser);
+
+                $("#registerForm")[0].reset();
+            }
+            else
+            {
+                // Show an error
+                errorMessageDiv.show();
+                errorMessage.text('Please fill in the form before submitting.');
+            }
         });
     }
 
